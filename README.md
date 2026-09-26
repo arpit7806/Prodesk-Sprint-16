@@ -38,6 +38,10 @@ Shipped a **"Generate Summary"** feature that reads live dashboard state (sprint
 
 - **Performance Audit:** Ran a Google Lighthouse audit; images optimized, heavy components code-split, and the app tuned to hit a 90+ Performance Score.
 - **Final CI/CD:** Final stable build pushed to Vercel with the custom domain and SSL certificate correctly bound.
+- <img width="1872" height="1083" alt="image" src="https://github.com/user-attachments/assets/422798b6-f295-4154-a73b-1a85d23d6057" />
+<img width="1878" height="1095" alt="image" src="https://github.com/user-attachments/assets/0323714f-f787-43db-b9ce-da2d4a4eeda9" />
+
+
 
 ---
 
