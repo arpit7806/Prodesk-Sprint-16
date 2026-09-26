@@ -11,6 +11,8 @@ import TaskCard from "./TaskCard";
 import TaskDrawer from "./TaskDrawer";
 import { Avatar, cv } from "./ui";
 import { useToast } from "./ToastProvider";
+import { AIInsights } from "./AIInsights";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 export default function Board() {
   const { tasks, ready, create, update, move, comment, remove } = useTasks();
@@ -97,38 +99,42 @@ export default function Board() {
           </button>
         </section>
 
+        <AIInsights dashboardData={{ tasks, pct, done }} />
+
         <div className="board">
-          {COLUMNS.map((c) => {
-            const list = tasks.filter((t) => t.status === c.id && (!q || `${t.title} ${t.id}`.toLowerCase().includes(q)));
-            return (
-              <section
-                key={c.id}
-                className={`col ${overCol === c.id ? "over" : ""}`}
-                onDragOver={(e) => {
-                  if (!dragId) return;
-                  e.preventDefault();
-                  setOverCol(c.id);
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  if (dragId) move(dragId, c.id);
-                  endDrag();
-                }}
-              >
-                <div className="ch">
-                  <span className="dot" style={{ background: c.color }} />
-                  <b>{c.label}</b>
-                  <span className="cnt">{list.length}</span>
-                </div>
-                {list.map((t) => (
-                  <TaskCard key={t.id} task={t} onOpen={setOpenId} onDragStart={onDragStart} onDragEnd={endDrag} />
-                ))}
-                <button className="add" onClick={() => setNewStatus(c.id)}>
-                  + Add task
-                </button>
-              </section>
-            );
-          })}
+          <ErrorBoundary label="Task board">
+            {COLUMNS.map((c) => {
+              const list = tasks.filter((t) => t.status === c.id && (!q || `${t.title} ${t.id}`.toLowerCase().includes(q)));
+              return (
+                <section
+                  key={c.id}
+                  className={`col ${overCol === c.id ? "over" : ""}`}
+                  onDragOver={(e) => {
+                    if (!dragId) return;
+                    e.preventDefault();
+                    setOverCol(c.id);
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (dragId) move(dragId, c.id);
+                    endDrag();
+                  }}
+                >
+                  <div className="ch">
+                    <span className="dot" style={{ background: c.color }} />
+                    <b>{c.label}</b>
+                    <span className="cnt">{list.length}</span>
+                  </div>
+                  {list.map((t) => (
+                    <TaskCard key={t.id} task={t} onOpen={setOpenId} onDragStart={onDragStart} onDragEnd={endDrag} />
+                  ))}
+                  <button className="add" onClick={() => setNewStatus(c.id)}>
+                    + Add task
+                  </button>
+                </section>
+              );
+            })}
+          </ErrorBoundary>
         </div>
       </main>
 
